@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Site de Moda</title>
+
+</head>
+
+<body>
+    <main id="app">
+
+        <section class="items">
+            <h4>Selecione as roupas</h4>
+            <div v-for="product in products" class="product" @click="toggleActive(product)"
+                :class="{selected: product.active}">
+
+                <div class="photo">
+                    <img :src="product.photo">
+                </div>
+                <div class="description">
+                    <span class="name">{{product.name}}</span>
+                    <span class="price">$ {{product.price}}</span>
+                    <div class="quantity-area">
+                        <template v-if="product.active">
+                            <button :disabled="product.quantity<=1" @click.stop="product.quantity--">-</button>
+                            <span class="quantity">{{product.quantity}}</span>
+                            <button @click.stop="product.quantity++">+</button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="items">
+            <h4>Selecione os acessórios</h4>
+            <div v-for="acessorio in acessorios" class="product" @click="toggleActive(acessorio)"
+                :class="{selected: acessorio.active}">
+
+                <div class="photo">
+                    <img :src="acessorio.photo">
+                </div>
+                <div class="description">
+                    <span class="name">{{acessorio.name}}</span>
+                    <span class="price">$ {{acessorio.price}}</span>
+                    <div class="quantity-area">
+                        <template v-if="acessorio.active">
+                            <button :disabled="acessorio.quantity<=1" @click.stop="acessorio.quantity--">-</button>
+                            <span class="quantity">{{acessorio.quantity}}</span>
+                            <button @click.stop="acessorio.quantity++">+</button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="summary" v-if="total()>0">
+            <strong>Resumo do pedido</strong>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="product in products">
+                        <template v-if="product.active">
+                            <td>{{product.quantity + 'x ' + product.name}}</td>
+                            <td>{{(product.quantity * product.price).toFixed(2)}}</td>
+                        </template>
+                    </tr>
+                    <tr v-for="acessorio in acessorios">
+                        <template v-if="acessorio.active">
+                            <td>{{acessorio.quantity + 'x ' + acessorio.name}}</td>
+                            <td>{{(acessorio.quantity * acessorio.price).toFixed(2)}}</td>
+                        </template>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th>{{total()}}</th>
+                        
+                       
+                    </tr>
+                </tbody>
+
+                
+            </table>
+            <div>
+                <button onClick="window.location.reload();">Refresh Page</button>
+            </div>
+        </section>
+
+
+    </main>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
